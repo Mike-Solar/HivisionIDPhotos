@@ -6,6 +6,7 @@ import os
 from os.path import exists
 import requests
 
+PROVIDERS='CPUExecutionProvider'
 
 def download_img(img_url, base_dir):
     print("Downloading Onnx Model in:",img_url)
@@ -47,19 +48,19 @@ def detect_faces(image, min_face_size=20.0, thresholds=None, nms_thresholds=None
             # download onnx model
             download_img(img_url=base_url+onnx_filedir, base_dir=f"{basedir}/weights")
 
-    pnet = onnxruntime.InferenceSession(f"{basedir}/weights/pnet.onnx")  # Load a ONNX model
+    pnet = onnxruntime.InferenceSession(f"{basedir}/weights/pnet.onnx",providers=PROVIDERS)  # Load a ONNX model
     input_name_pnet = pnet.get_inputs()[0].name
     output_name_pnet1 = pnet.get_outputs()[0].name
     output_name_pnet2 = pnet.get_outputs()[1].name
     pnet = [pnet, input_name_pnet, [output_name_pnet1, output_name_pnet2]]
 
-    rnet = onnxruntime.InferenceSession(f"{basedir}/weights/rnet.onnx")  # Load a ONNX model
+    rnet = onnxruntime.InferenceSession(f"{basedir}/weights/rnet.onnx",providers=PROVIDERS)  # Load a ONNX model
     input_name_rnet = rnet.get_inputs()[0].name
     output_name_rnet1 = rnet.get_outputs()[0].name
     output_name_rnet2 = rnet.get_outputs()[1].name
     rnet = [rnet, input_name_rnet, [output_name_rnet1, output_name_rnet2]]
 
-    onet = onnxruntime.InferenceSession(f"{basedir}/weights/onet.onnx")  # Load a ONNX model
+    onet = onnxruntime.InferenceSession(f"{basedir}/weights/onet.onnx",providers=PROVIDERS)  # Load a ONNX model
     input_name_onet = onet.get_inputs()[0].name
     output_name_onet1 = onet.get_outputs()[0].name
     output_name_onet2 = onet.get_outputs()[1].name
